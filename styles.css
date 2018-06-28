@@ -3,18 +3,19 @@
     justify-content: center;
     background-color: rgb(50, 122, 50,0.6);
     box-shadow: 13px 10px 5px 0px rgba(0,0,0,0.75);
+    height: 90px;
 }
 
 .titulo h1{
     text-anchor: middle;
     font-family: Impact;
-    font-size: 4.0em;
+    font-size: 3.0em;
     color: white;
 }
 
 .titulo img{
     width: 112px;    
-    height: 140px;
+    height: 90px;
     
 }
 

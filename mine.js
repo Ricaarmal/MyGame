@@ -9,10 +9,17 @@ var images ={
     fondo: "./Images/Fondo.png",
     thishit: "./Images/Engine.png",
     protector1: "./Images/PelicanDropship.png",
+    protector2: "./Images/protector2.png",
     enemies: "./Images/Enemie.png"
 
 }
+var sound = new Audio();
+sound.src = "./Musica/HALO (Theme) (8 Bit Remix Cover Version) [Tribute to HALO] - 8 Bit Universe.mp3";
+sound.loop = true;
 var enemies = [];
+
+
+
 
 //class
 class Fondo{    
@@ -21,6 +28,7 @@ class Fondo{
         this.y = 0;
         this.width = canvas.width;
         this.height = canvas.height;
+        
         this.image = new Image();
         this.image.src = images.fondo;
         this.image.onload = function(){
@@ -34,6 +42,24 @@ class Fondo{
         if(this.x === -this.width) this.x = 0;
         ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
         ctx.drawImage(this.image,this.x+this.width,this.y,this.width,this.height);
+    }
+    ganoUno(){
+        ctx.font = "80px Arial";
+        ctx.fillStyle = "red";
+        ctx.fillText("Jugador UNO GANO", 0 ,canvas.height/2);
+
+        ctx.font = "50px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText("Press 7 for restart", 0 ,canvas.height/2 + 100);
+    }
+    ganoDos(){
+        ctx.font = "80px Helvetic";
+        ctx.fillStyle = "white";
+        ctx.fillText("Jugador DOS GANO", 0 ,canvas.height/2);
+
+        ctx.font = "50px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText("Press 7 for restart", 0 ,canvas.height/2 + 100);
     }
 }
 
@@ -60,15 +86,16 @@ class Ships{
                 (this.x + this.width > item.x) &&
                 (this.y < item.y + item.height) &&
                 (this.y + this.height > item.y);
+                blast.sound();
       }
 }
 class ProtectThis{
-    constructor(x =canvas.height,y,img){
+    constructor(x = canvas.height,y,img){
         this.x = x;
         this.y = y;
         this.width = 75;
         this.height = 50;
-        this.direction = "down";
+        
 
         this.image = new Image();
         this.image.src = img;
@@ -90,7 +117,7 @@ class Protector1 extends Ships{
 class Enemies extends Ships{
     constructor(x,y,img){
         super(x,y,img);
-        
+        this.height = 30;
         
         
     } 
@@ -103,18 +130,20 @@ class Enemies extends Ships{
 //instances
 var fondo = new Fondo();
 var protector1 = new Protector1(canvas.width-150,canvas.height/2,images.protector1);
-var protector2 = new Protector1(canvas.width-150,canvas.height/2,images.protector1);
+var protector2 = new Protector1(canvas.width-150,canvas.height/2 + 90,images.protector2);
 
 
 //mainFunctions
 function update(){
     frames++;
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    fondo.draw();
     protector1.draw();
-    followShip();
+    //followShip();
     generateEnemies();
     drawEnemies();
+    fondo.draw();
+    sound.play();
+    
 }
 
 function update1(){
@@ -122,77 +151,135 @@ function update1(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     fondo.draw();
     protector1.draw();
-    protector2.draw()
-    followShip();
+    protector2.draw();
+    sound.play();
+
+    //followShip();
     generateEnemies();
     drawEnemies();
+    
 }
 
 function start(){
+    if (interval) return;
     interval = setInterval(update, 1000/60);
 }
 
 function start1(){
+    if (interval) return;
     interval = setInterval(update1, 1000/60);
 }
 
 
 //aux functions
-function followShip(){
+/* function followShip(){
     var engine = new ProtectThis(protector1.x + this.width,protector1.y, images.thishit);
     return engine.draw();
-}
+} */
 function generateEnemies(){
-    if(!(frames%20===0) ) return;
+    if(!(frames%30===0) ) return;
 
     var x = 0;
-    var y = Math.floor((Math.random()*  canvas.height + 75));
+    var y = Math.floor((Math.random()* canvas.height));
     
     var ship1 = new Enemies(x, y, images.enemies);
     
     enemies.push(ship1);
     
 }
+function soundBlast (){
+    var blast = new Audio();
+    blast.src = "./Musica/Explosion+3.mp3";
+    blast.play();
+}
 
 function drawEnemies(){
 enemies.forEach(function(ship){
     ship.draw();
     if(protector1.isTouching(ship)){
-        gameover();
+        soundBlast();
+        adios();
+        
         }
+        
+    if(protector2.isTouching(ship)){
+        soundBlast();
+        adios1();
+        
+        }
+   
     })
 }
 
 function adios(){
-    interval = clear(interval);
+    clearInterval(interval);
+    interval = undefined;
+    sound.pause();
+    sound.currentTime = 0;
+    fondo.ganoDos();
 }
 
+function adios1(){
+    clearInterval(interval);
+    interval = undefined;
+    sound.pause();
+    sound.currentTime = 0;
+    fondo.ganoUno();
+}
+
+function restart()
+{
+    if(interval)return;
+    else{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    frames = 0;
+    enemies = [];
+
+    }   
+}
+
+
 //listeners
-addEventListener('mousemove', function(e){
-       protector1.x = e.clientX;
-        protector1.y = e.clientY;
+addEventListener('keydown', function(e){
+    switch(e.keyCode){    
+    case 87: protector1.y -= 25;
+    break;
+    case 83: protector1.y +=25;
+    break;
+    case 65: protector1.x -=25;
+    break;
+    case 68: protector1.x +=25;
+    break; 
+    }
 })
 addEventListener('keydown',function(e){
     switch(e.keyCode){
-    case 38: protector2.y -=20;
+    case 38: protector2.y -=25;
     break;
-    case 40: protector2.y +=20;
+    case 40: protector2.y +=25;
     break;
-    case 37: protector2.x -=20;
+    case 37: protector2.x -=25;
     break;
-    case 39 : protector2.x +=20;
+    case 39 : protector2.x +=25;
+    break;
+    case 55: restart();
     break;
     }
 })
 
+
+
 document.getElementById("button").addEventListener('click',function(){
+    
     start();
+    
+    
 })
 
 document.getElementById("button1").addEventListener('click',function(){
+    
     start1();
 })
-
 
 
 
