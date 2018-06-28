@@ -82,11 +82,11 @@ class Ships{
     }
     
     isTouching(item){
-        return  (this.x < item.x + item.width) &&
+        return  (this.x < item.x + 10 + item.width) &&
                 (this.x + this.width > item.x) &&
-                (this.y < item.y + item.height) &&
-                (this.y + this.height > item.y);
-                blast.sound();
+                (this.y < item.y + item.height - 20) &&
+                (this.y-10 + this.height > item.y);
+                
       }
 }
 class ProtectThis{
@@ -234,6 +234,10 @@ function restart()
     ctx.clearRect(0,0,canvas.width,canvas.height);
     frames = 0;
     enemies = [];
+    protector1.x = canvas.width-150;
+    protector1.y = canvas.height/2;
+    protector2.x = canvas.width-150;
+    protector2.y = canvas.height/2 +90;
 
     }   
 }
