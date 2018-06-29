@@ -273,32 +273,36 @@ addEventListener('keydown', function(e){
     switch(e.keyCode){ 
 
                       
-    case 87: if(protector1.y + 20 === 0) return;
+    case 87: if(protector1.y <= 0 + 20) return;
         protector1.y -= 20;
     break;
 
-    case 83: if(protector1.y > canvas.height) return; 
+    case 83: if(protector1.y >= canvas.height -55) return; 
         protector1.y += 20;
     break;
 
-    case 65: if(protector1.x === 0 + 25) return;
-        protector1.x -=25;
+    case 65: if(protector1.x <= 0) return;
+        protector1.x -=20;
     
     break;
-    case 68: if(protector1.x > canvas.width -25) return; 
-        protector1.x +=25;
+    case 68: if(protector1.x >= canvas.width -75) return; 
+        protector1.x +=20;
     break; 
     }
 })
 addEventListener('keydown',function(e){
     switch(e.keyCode){
-    case 38: protector2.y -=25;
+    case 38: if(protector2.y <= 0 + 19) return;      
+        protector2.y -=20;
     break;
-    case 40: protector2.y +=25;
+    case 40: if(protector2.y >= canvas.height -60) return; 
+        protector2.y +=20;
     break;
-    case 37: protector2.x -=25;
+    case 37: if(protector2.x <= 0) return;
+        protector2.x -=20;
     break;
-    case 39 : protector2.x +=25;
+    case 39: if(protector2.x >= canvas.width -75) return; 
+        protector2.x +=20;
     break;
     case 55: restart();
     break;
