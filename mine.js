@@ -273,7 +273,7 @@ addEventListener('keydown', function(e){
     switch(e.keyCode){ 
 
                       
-    case 87: if(protector1.y === 0 + 50) return;
+    case 87: if(protector1.y + 20 === 0) return;
         protector1.y -= 20;
     break;
 
