@@ -82,7 +82,7 @@ class Ships{
     }
     
     isTouching(item){
-        return  (this.x < item.x + 10 + item.width) &&
+        return  (this.x+5 < item.x + item.width) &&
                 (this.x + this.width > item.x) &&
                 (this.y < item.y + item.height - 20) &&
                 (this.y-10 + this.height > item.y);
@@ -122,7 +122,7 @@ class Enemies extends Ships{
         
     } 
     draw(){
-        this.x +=2; 
+        this.x +=3; 
         ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
     }
 }
@@ -137,11 +137,12 @@ var protector2 = new Protector1(canvas.width-150,canvas.height/2 + 90,images.pro
 function update(){
     frames++;
     ctx.clearRect(0,0,canvas.width,canvas.height);
+    fondo.draw();
     protector1.draw();
     //followShip();
     generateEnemies();
     drawEnemies();
-    fondo.draw();
+    
     sound.play();
     
 }
@@ -156,7 +157,7 @@ function update1(){
 
     //followShip();
     generateEnemies();
-    drawEnemies();
+    drawEnemies1();
     
 }
 
@@ -177,16 +178,17 @@ function start1(){
     return engine.draw();
 } */
 function generateEnemies(){
-    if(!(frames%30===0) ) return;
+    if(!(frames%25===0) ) return;
 
     var x = 0;
     var y = Math.floor((Math.random()* canvas.height));
     
     var ship1 = new Enemies(x, y, images.enemies);
     
-    enemies.push(ship1);
-    
+    enemies.push(ship1);  
 }
+
+
 function soundBlast (){
     var blast = new Audio();
     blast.src = "./Musica/Explosion+3.mp3";
@@ -199,19 +201,49 @@ enemies.forEach(function(ship){
     if(protector1.isTouching(ship)){
         soundBlast();
         adios();
-        
         }
         
-    if(protector2.isTouching(ship)){
-        soundBlast();
-        adios1();
-        
-        }
-   
     })
 }
 
+function drawEnemies1(){
+    enemies.forEach(function(ship){
+        ship.draw();
+        if(protector1.isTouching(ship)){
+            soundBlast();
+            adios2();
+            
+            }
+            
+        if(protector2.isTouching(ship)){
+            soundBlast();
+            adios1();
+            
+            }
+        })
+    }
+    
+
+
 function adios(){
+    
+    clearInterval(interval);
+    interval = undefined;
+    sound.pause();
+    sound.currentTime = 0;
+    
+}
+
+function adios1(){
+    
+    clearInterval(interval);
+    interval = undefined;
+    sound.pause();
+    sound.currentTime = 0;
+    fondo.ganoUno();
+}
+function adios2(){
+    
     clearInterval(interval);
     interval = undefined;
     sound.pause();
@@ -219,13 +251,6 @@ function adios(){
     fondo.ganoDos();
 }
 
-function adios1(){
-    clearInterval(interval);
-    interval = undefined;
-    sound.pause();
-    sound.currentTime = 0;
-    fondo.ganoUno();
-}
 
 function restart()
 {
@@ -245,14 +270,23 @@ function restart()
 
 //listeners
 addEventListener('keydown', function(e){
-    switch(e.keyCode){    
-    case 87: protector1.y -= 25;
+    switch(e.keyCode){ 
+
+                      
+    case 87: if(protector1.y === 0 + 50) return;
+        protector1.y -= 20;
     break;
-    case 83: protector1.y +=25;
+
+    case 83: if(protector1.y > canvas.height) return; 
+        protector1.y += 20;
     break;
-    case 65: protector1.x -=25;
+
+    case 65: if(protector1.x === 0 + 25) return;
+        protector1.x -=25;
+    
     break;
-    case 68: protector1.x +=25;
+    case 68: if(protector1.x > canvas.width -25) return; 
+        protector1.x +=25;
     break; 
     }
 })
@@ -274,14 +308,14 @@ addEventListener('keydown',function(e){
 
 
 document.getElementById("button").addEventListener('click',function(){
-    
+    if(interval) return;
     start();
     
     
 })
 
 document.getElementById("button1").addEventListener('click',function(){
-    
+    if(interval) return;
     start1();
 })
 
