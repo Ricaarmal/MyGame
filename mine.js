@@ -1,6 +1,8 @@
 //canvas
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+var namePlayer1 = document.getElementById("player1");
+var namePlayer1 = document.getElementById("player2");
 
 //constants
 var interval;
@@ -16,13 +18,13 @@ var images = {
 var sound = new Audio();
 sound.src =
   "./Musica/HALO (Theme) (8 Bit Remix Cover Version) [Tribute to HALO] - 8 Bit Universe.mp3";
-sound.loop = true;
+sound.loop = false;
 var enemies = [];
 
 //class
 class Fondo {
   constructor() {
-    var points = 0;
+    this.points = 0;
     this.x = 0;
     this.y = 0;
     this.width = canvas.width;
@@ -47,13 +49,20 @@ class Fondo {
       this.width,
       this.height
     );
-    this.puntuacion();
+    if (update) this.puntuacion();
   }
   puntuacion() {
+    this.points = Math.floor(frames / 10);
     ctx.font = "50px Arial";
     ctx.fillStyle = "green";
-    ctx.fillText(0, 760, 50);
+    ctx.fillText("Score " + this.points, 500, 50);
   }
+  gameOver() {
+    ctx.font = "60px Arial";
+    ctx.fillStyle = "red";
+    ctx.fillText("Tu Puntuacion final es " + this.points, 0, canvas.height / 2);
+  }
+
   ganoUno() {
     ctx.font = "80px Arial";
     ctx.fillStyle = "red";
@@ -103,6 +112,7 @@ class Ships {
     );
   }
 }
+
 class ProtectThis {
   constructor(x = canvas.height, y, img) {
     this.x = x;
@@ -120,9 +130,9 @@ class ProtectThis {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
   draw() {
-    if (this.y > 612 - 50) this.direction = "up";
+    if (this.y >= 612 - 50) this.direction = "up";
 
-    if (this.y < 1) this.direction = "down";
+    if (this.y <= 1) this.direction = "down";
     if (this.direction === "up") {
       this.y -= 2;
     } else {
@@ -167,11 +177,10 @@ function update() {
   frames++;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   fondo.draw();
-
+  drawEnemies();
+  generateEnemies();
   protector1.draw();
   //followShip();
-  generateEnemies();
-  drawEnemies();
 
   sound.play();
 }
@@ -249,8 +258,9 @@ function drawEnemies1() {
 function adios() {
   clearInterval(interval);
   interval = undefined;
-  sound.pause();
   sound.currentTime = 0;
+  sound.pause();
+  fondo.gameOver();
 }
 
 function adios1() {

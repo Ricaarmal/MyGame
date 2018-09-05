@@ -1,43 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="./Images/phpThumb_generated_thumbnailico" type="image/x-icon">
     <link rel="stylesheet" href="./styles.css">
-    <title>Document</title>
+    <title>Halo Game</title>
 </head>
-<body>
-    
-<header class="titulo">
-    <h1>Defeat your enemy</h1>
-    <img src="./Images/UNSC_Logo_Halo_4.png" alt="UNSC"> 
-    <button id="button">OnePlayer</button>
-    <button id="button1">TwoPlayers</button>
-    
-</header>
 
-<div class = "cuerpito">
-    
-    <div class = "cuerpito1">
-        <img src="./Images/PelicanDropship.png" alt="uno">
-        <img src="./Images/WASD.png" alt="Keybord wasd">
-        <span>Jugador 1</span>
-    </div>
+<body>
+
+    <header class="titulo">
+        <h1>Defeat your enemy</h1>
+        <img src="./Images/UNSC_Logo_Halo_4.png" alt="UNSC">
+        <button id="button">OnePlayer</button>
+        <button id="button1">TwoPlayers</button>
+
+    </header>
+
+    <div class="cuerpito">
+
+        <div class="cuerpito1">
+            <img src="./Images/PelicanDropship.png" alt="uno">
+            <img src="./Images/WASD.png" alt="Keybord wasd">
+            <input type="text" id="player1" placeholder="Introduce tu nombre">
+        </div>
 
         <canvas id="canvas" width="800" height="612"></canvas>
 
-    
-    <div class = "cuerpito2">
-        <img src="./Images/protector2.png" alt="uno">
-        <img src="./Images/arrow.png" alt="Keybord wasd">
-        <span>Jugador 2</span>
+
+        <div class="cuerpito2">
+            <img src="./Images/protector2.png" alt="uno">
+            <img src="./Images/arrow.png" alt="Keybord wasd">
+            <input type="text" id="player2" placeholder="Introduce tu nombre">
+        </div>
+
+
+
     </div>
-
-
-
-</div>
 
     <script src="./mine.js"></script>
 </body>
+
 </html>
