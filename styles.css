@@ -25,14 +25,14 @@
 
 
 .cuerpito img:first-child{
-    background-color: rgb(211, 175, 44, 0.6);
+    background-color: rgb(211, 175, 44, 0.3);
     width: 112px;
     height: 612px;
     margin-right: 5px;
     
 }
 .cuerpito img:last-child{
-    background-color: rgb(196, 37, 23, 0.6);
+    background-color: rgb(196, 37, 23, 0.3);
     width: 112px;
     height: 612px;
     margin-left: 5px;
